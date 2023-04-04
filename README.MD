@@ -8,10 +8,10 @@
 ```python
 
 from cygsubprocess import Bashsubprocess
+
 ba = Bashsubprocess(
-    bash_exe=r"C:\tools\cygwin\bin\bash.exe",
-    cgypath_exe=r"C:\tools\cygwin\bin\cygpath.exe",
-)
+    cygfolder=r'C:\cygwin',mirrorsite=None,addtopath=True
+) # If cygwin is not installed, it will be installed and added to the PATH
 ba.convert_path_cyg2win("/cygdrive/c/Users/hansc/Downloads/ClipAngel 2.09")
 # r'C:\Users\hansc\Downloads\ClipAngel 2.09'
 
@@ -65,6 +65,19 @@ fi
 """
 bashtofile2 = ba.exec_sh_directly(bashscr, printoutput=True)
 print(bashtofile2.stdout_lines)
+
+scriptfile='c:\\bashscripttest.sh'
+with open(scriptfile,mode='w', encoding='utf-8',newline='\n') as f:
+    f.write(bashscr)
+
+ba.installapt() # install apt  https://raw.githubusercontent.com/transcode-open/apt-cyg/master/apt-cyg
+test1=ba.apt_install( package='hunspell-de') # install a package with apt
+test2=ba.exec_sh_url( bashscr=r'https://raw.githubusercontent.com/transcode-open/apt-cyg/master/apt-cyg', printoutput=True)
+test3=ba.exec_sh_file( bashscr=scriptfile, printoutput=True)
+test4=ba.exec_sh_to_file( bashscr, printoutput=True)
+test5=ba.exec_sh_directly( bashscr, printoutput=True)
+test6=ba.get_list_of_files_no_stat( folder=r'C:\Python34') # windows and cyg path (escaped and unescaped)
+test7=ba.get_list_of_files_with_stat( folder=r'C:\Python34') # windows and cyg path (escaped and unescaped)
 
 ....
 
