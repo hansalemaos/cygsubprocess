@@ -4,6 +4,8 @@ import tempfile
 import threading
 from functools import partial
 import random
+from time import sleep
+
 import requests
 import pathlib
 from collections import namedtuple
@@ -480,14 +482,28 @@ class Bashsubprocess:
         if installapt:
             self.installapt()
         self.aptpath = os.path.normpath(os.path.join(self.folder, "apt"))
-        self.aptpathcyg = self.convert_path_win2cyg(self.aptpath) + ".sh"
+        self.aptpathcyg = self.convert_path_win2cyg(self.aptpath)# + ".sh"
 
     def apt_install(self, package):
         if not os.path.exists(self.aptpath):
-            self.installapt()
-        co = [f"chmod +x {self.aptpathcyg}", self.aptpathcyg]
+           self.installapt()
+        co = f"chmod +x {self.aptpathcyg}"
         cmd3 = self.execute_print_capture(co)
-        self.execute_print_capture(cmd=[f"{self.aptpathcyg} install {package}"])
+        workdir = os.getcwd()
+        os.chdir(self.folder)
+        os.system(rf'start "" "{self.bash_exe}" -c "apt install {package}"')
+        sleep(1)
+        os.chdir(workdir)
+
+    def apt_remove(self, package):
+        co = f"chmod +x {self.aptpathcyg}"
+        cmd3 = self.execute_print_capture(co)
+        workdir = os.getcwd()
+        os.chdir(self.folder)
+        os.system(rf'start "" "{self.bash_exe}" -c "apt remove {package}"')
+        sleep(1)
+        os.chdir(workdir)
+
 
     def installapt(self):
         installapt = r"""#!/bin/bash
