@@ -71,7 +71,9 @@ with open(scriptfile,mode='w', encoding='utf-8',newline='\n') as f:
     f.write(bashscr)
 
 ba.installapt() # install apt  https://raw.githubusercontent.com/transcode-open/apt-cyg/master/apt-cyg
-test1=ba.apt_install( package='hunspell-de') # install a package with apt
+ba.apt_install( package='hunspell-de') # install a package with apt
+ba.apt_remove( package='hunspell-de') # remove a package with apt
+
 test2=ba.exec_sh_url( bashscr=r'https://raw.githubusercontent.com/transcode-open/apt-cyg/master/apt-cyg', printoutput=True)
 test3=ba.exec_sh_file( bashscr=scriptfile, printoutput=True)
 test4=ba.exec_sh_to_file( bashscr, printoutput=True)
